@@ -1,0 +1,5 @@
+*.csv
+*.json
+master_json.json
+\stub_csvs
+\stub_json
