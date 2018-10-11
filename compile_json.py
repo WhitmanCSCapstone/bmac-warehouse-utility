@@ -52,7 +52,8 @@ field_names = {
         "type",
         "status",
         "notes",
-        "password"],
+        "password",
+    ],
 
     "Products": [
         "product_id",
@@ -136,7 +137,7 @@ for f in csv_files:
 
     json_file = open("./stub_json/{}.json".format(clean_name), 'w+')
 
-    json_file.write("{" + '"{}": ['.format(clean_name))
+    json_file.write("{" + '"{}": ['.format(clean_name.lower()))
 
     for row in reader:
         # json.dump(row, json_file, indent=4, sort_keys=True)
@@ -144,7 +145,6 @@ for f in csv_files:
         json_file.write(",")
 
     # make it valid json (SUPER janky)
-
     json_file.close()
 
     json_file = open("./stub_json/{}.json".format(clean_name), 'rb+')
@@ -156,6 +156,8 @@ for f in csv_files:
     json_file.write("]}")
     json_file.close()
 
+
+print("JSON files have been rewritten!")
 
 # get all the new json files
 json_files = glob.glob("./stub_json/*.json")
@@ -174,3 +176,6 @@ open("master_json.json", "w").close()
 # write the compiled json to master_json.json
 with open("master_json.json", "w") as outfile:
     json.dump(obj_list, outfile, indent=4, sort_keys=True)
+
+
+print("master_json.json has been updated!")
