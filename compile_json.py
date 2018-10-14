@@ -45,6 +45,7 @@ field_names = {
         "first_name",
         "address",
         "city",
+        "state",
         "zip",
         "phone1",
         "phone2",
