@@ -2,22 +2,9 @@ import json
 import glob
 import csv
 import os
+import subprocess
 
 field_names = {
-    "Providers": [
-        "activity_status",
-        "address",
-        "city",
-        "contact_email",
-        "contact_name",
-        "contact_phone_num",
-        "county",
-        "id",
-        "name",
-        "state",
-        "type",
-        "zip",
-    ],
     "Customers": [
         "customer_id",
         "code",
@@ -112,21 +99,17 @@ field_names = {
     ],
 }
 
-file_names = [
-    "Contributions",
-    "Customers",
-    "FundingSources",
-    "Persons", "Products",
-    "Providers",
-    "Shipments",
-]
+# get csv files
+csv_files = glob.glob("./stub_csvs/*.csv")
+
+# clean up the names
+file_names = []
+for name in csv_files:
+    file_names.append(name[12:-4])
 
 # erase all the previously written json files
 for name in file_names:
     open("./stub_json/{}.json".format(name), "w").close()
-
-# get csv files
-csv_files = glob.glob("./stub_csvs/*.csv")
 
 # write new json from csv files
 for f in csv_files:
@@ -137,11 +120,9 @@ for f in csv_files:
     reader = csv.DictReader(csv_file, field_names[clean_name])
 
     json_file = open("./stub_json/{}.json".format(clean_name), 'w+')
-
     json_file.write("{" + '"{}": ['.format(clean_name.lower()))
 
     for row in reader:
-        # json.dump(row, json_file, indent=4, sort_keys=True)
         json.dump(row, json_file)
         json_file.write(",")
 
@@ -156,9 +137,14 @@ for f in csv_files:
     json_file = open("./stub_json/{}.json".format(clean_name), 'a')
     json_file.write("]}")
     json_file.close()
+    csv_file.close()
 
+print("CSV files have been converted to JSON!")
 
-print("JSON files have been rewritten!")
+cmd = ['python', 'fix_json.py']
+subprocess.Popen(cmd).wait()
+print("JSON files have been rewritten and fixed!")
+
 
 # get all the new json files
 json_files = glob.glob("./stub_json/*.json")
