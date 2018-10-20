@@ -11,47 +11,59 @@ file_names = []
 for name in json_files:
     file_names.append(name[12:-5])
 
-def parseShipments(data):
+def parseItems(data, table_name, accessor):
+    """function that takes a json object, a table name, and an accessor key and parses the items from strings to arrays of json objects"""
 
-    entries = data["shipments"]
+    entries = data[table_name.lower()]
 
     for entry in entries:
 
-        # when stupid "ship_items" is literally nothing
-        if(entry["ship_items"] == ''):
-            entry["ship_items"] = []
-            break
+        # edge case
+        if(entry[accessor] == ''):
+            entry[accessor] = []
+            continue
 
-        items = entry["ship_items"].split(",")
+        items = entry[accessor].split(",")
         new_items = []
-        for item in items:
 
+        for item in items:
             # product: case lots: tot weight
             values = item.split(":")
             keys = ["product", "case_lots", "total_weight"]
-
+            # if no data except for product name
+            if(":" not in item):
+                keys = ["product"]
             # product; unit weight: case lots: total weight
             if(";" in values[0]):
                 values = values[0].split(';') + values[1:3]
                 keys = ['product', 'unit_weight', 'case_lots', 'total_weight']
-
+            # create the new item as a dict
             json_dict = {keys[i] : values [i] for i in range(len(keys))}
             new_items.append(json_dict)
 
-        entry["ship_items"] = new_items
+        entry[accessor] = new_items
 
-    data["shipments"] = entries
+    data[table_name.lower()] = entries
 
     return data
 
 
 for json_file in json_files:
-    if json_file[12:-5] == "Shipments":
+
+    clean_name = json_file[12:-5]
+
+    if clean_name == "Shipments":
         file = open(json_file, 'r')
         data = json.loads(file.read())
         file.close()
-
-        new_data = parseShipments(data)
-
+        new_data = parseItems(data, clean_name, "ship_items")
         with open(json_file, 'w') as outfile:
-            json.dump(new_data, outfile)
+           json.dump(new_data, outfile)
+
+    elif clean_name == "Contributions":
+        file = open(json_file, 'r')
+        data = json.loads(file.read())
+        file.close()
+        new_data = parseItems(data, clean_name, "receive_items")
+        with open(json_file, 'w') as outfile:
+           json.dump(new_data, outfile)
