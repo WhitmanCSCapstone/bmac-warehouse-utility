@@ -145,6 +145,10 @@ cmd = ['python', 'fix_json.py']
 subprocess.Popen(cmd).wait()
 print("JSON files have been rewritten and fixed!")
 
+cmd = ['python', 'provider_refactor.py']
+subprocess.Popen(cmd).wait()
+print("Providers.json has been refactored!")
+
 
 # get all the new json files
 json_files = glob.glob("./stub_json/*.json")
