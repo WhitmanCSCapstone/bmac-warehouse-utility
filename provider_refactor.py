@@ -53,7 +53,7 @@ for receipt in receipts:
         uniq_id = provider_id_to_hash_map[name]
     except:
         counter += 1
-        uniq_id = '0'
+        uniq_id = 'INVALID PROVIDER ID'
     receipt['provider_id'] = uniq_id
     new_dict['contributions'].append(receipt)
 
