@@ -28,7 +28,7 @@ for provider in providers:
     else:
         counter += 1
 
-print('{} providers have identical provider_ids in the providers table'.format(counter))
+print('There are {} duplicate providers in the providers table'.format(counter))
 
 with open(file_name, 'w') as outfile:
     json.dump(new_dict, outfile)
