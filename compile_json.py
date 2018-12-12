@@ -149,6 +149,14 @@ cmd = ['python', 'provider_refactor.py']
 subprocess.Popen(cmd).wait()
 print("Providers.json has been refactored!")
 
+cmd = ['python', 'customers_refactor.py']
+subprocess.Popen(cmd).wait()
+print("Customers.json has been refactored!")
+
+cmd = ['python', 'shipments_refactor.py']
+subprocess.Popen(cmd).wait()
+print("The rest of the tables had unique ids given to them!")
+
 
 # get all the new json files
 json_files = glob.glob("./stub_json/*.json")
