@@ -15,6 +15,10 @@ def give_uniq_ids(file_name, key):
 
     for obj in objects:
         uniq_id = uuid.uuid5(uuid.NAMESPACE_OID, str(obj))
+
+        # make objs self-referential
+        obj['uniq_id'] = str(uniq_id)
+
         new_dict[key][str(uniq_id)] = obj
 
     with open(file_name, 'w') as outfile:

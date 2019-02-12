@@ -21,6 +21,8 @@ for customer in customers:
     uniq_id = uuid.uuid5(uuid.NAMESPACE_OID, str(customer))
     new_dict['customers'][str(uniq_id)] = customer
 
+    customer['uniq_id'] = str(uniq_id)
+
     name = customer['customer_id']
     # b/c whoever designed this made the provider_id in a receipts object only have the name, not the location, so we can't know if the old data meant that this receipts was from the alberstons in King County or in Walla Walla, so I'm arbitrarily choosing the one that I loop over first to be the one that gets the receipt credit
     if name not in customer_id_to_hash_map:
