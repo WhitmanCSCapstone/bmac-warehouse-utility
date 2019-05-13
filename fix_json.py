@@ -33,10 +33,14 @@ def parseItems(data, table_name, accessor):
             # if no data except for product name
             if(":" not in item):
                 keys = ["product"]
-            # product; unit weight: case lots: total weight
             if(";" in values[0]):
                 values = values[0].split(';') + values[1:3]
-                keys = ['product', 'unit_weight', 'case_lots', 'total_weight']
+                # product; unit weight: case lots: total weight
+                if(len(values) == 4):
+                    keys = ['product', 'unit_weight', 'case_lots', 'total_weight']
+                # product; funds_source; unit weight: case lots: total weight
+                elif(len(values) == 5):
+                    keys = ['product', 'funds_source', 'unit_weight', 'case_lots', 'total_weight']
             # create the new item as a dict
             json_dict = {keys[i] : values [i] for i in range(len(keys))}
             new_items.append(json_dict)
