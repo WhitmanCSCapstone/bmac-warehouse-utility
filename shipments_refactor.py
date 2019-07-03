@@ -1,6 +1,7 @@
 import json
 import uuid
 import glob
+from datetime import datetime
 
 
 def give_uniq_ids(file_name, key):
@@ -18,6 +19,42 @@ def give_uniq_ids(file_name, key):
 
         # make objs self-referential
         obj['uniq_id'] = str(uniq_id)
+
+        date = None
+        accessor = None
+
+        if('Shipments' in file_name):
+            accessor = 'ship_date'
+            date = obj[accessor]
+        elif('Products' in file_name):
+            accessor = 'initial_date'
+            date = obj[accessor]
+        elif('Contributions' in file_name):
+            accessor = 'recieve_date'
+            date = obj[accessor]
+
+        if(accessor is not None and date != ''):
+            date = date[0:8]
+            try:
+                date = datetime.strptime(date, '%y-%m-%d')
+            except:
+                date = datetime.strptime(date, '%m-%d-%y')
+
+            # get POSIX time
+            seconds = (date - datetime(1970,1,1)).total_seconds()
+            obj[accessor] = seconds
+            if('Shipments' in file_name and obj['invoice_date'] != ''):
+                accessor = 'invoice_date'
+                date = obj[accessor]
+                date = date[0:8]
+                try:
+                    date = datetime.strptime(date, '%y-%m-%d')
+                except:
+                    date = datetime.strptime(date, '%m-%d-%y')
+
+                    # get POSIX time
+                seconds = (date - datetime(1970,1,1)).total_seconds()
+                obj[accessor] = seconds
 
         new_dict[key][str(uniq_id)] = obj
 
