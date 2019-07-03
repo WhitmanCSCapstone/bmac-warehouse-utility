@@ -105,7 +105,7 @@ csv_files = glob.glob("./stub_csvs/*.csv")
 # clean up the names
 file_names = []
 for name in csv_files:
-    file_names.append(name[12:-4])
+    file_names.append(name[14:-4])
 
 # erase all the previously written json files
 for name in file_names:
@@ -115,7 +115,7 @@ for name in file_names:
 for f in csv_files:
 
     csv_file = open(f, "r")
-    clean_name = f[12:-4]
+    clean_name = f[14:-4]
 
     reader = csv.DictReader(csv_file, field_names[clean_name])
 
