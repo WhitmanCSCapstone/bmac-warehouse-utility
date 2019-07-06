@@ -161,6 +161,10 @@ cmd = ['python', 'products_refactor.py']
 subprocess.Popen(cmd).wait()
 print("products have been refactored!")
 
+cmd = ['python', 'fundsSrcRefactor.py']
+subprocess.Popen(cmd).wait()
+print("funding sources have been refactored!")
+
 
 # get all the new json files
 json_files = glob.glob("./stub_json/*.json")
