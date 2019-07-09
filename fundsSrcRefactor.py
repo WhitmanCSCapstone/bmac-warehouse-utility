@@ -37,7 +37,7 @@ file.close()
 
 shipments = data['shipments']
 
-new_dict = {'shipments': []}
+new_dict = {'shipments': {}}
 
 counter = 0
 
@@ -50,7 +50,7 @@ for key in shipments:
         counter += 1
         uniq_id = 'INVALID FUNDING SOURCE ID'
     shipment['funds_source'] = uniq_id
-    new_dict['shipments'].append(shipment)
+    new_dict['shipments'][key] = shipment
 
 print('{} shipments have funding sources listed that do not exist in the funding sources table'.format(counter))
 
@@ -68,7 +68,7 @@ file.close()
 
 receipts = data['contributions']
 
-new_dict = {'contributions': []}
+new_dict = {'contributions': {}}
 
 counter = 0
 
@@ -81,7 +81,7 @@ for key in receipts:
         counter += 1
         uniq_id = 'INVALID FUNDING SOURCE ID'
     receipt['payment_source'] = uniq_id
-    new_dict['contributions'].append(receipt)
+    new_dict['contributions'][key] = receipt
 
 print('{} receipts have funding sources listed that do not exist in the funding sources table'.format(counter))
 
@@ -99,7 +99,7 @@ file.close()
 
 products = data['products']
 
-new_dict = {'products': []}
+new_dict = {'products': {}}
 
 counterA = 0
 counterB = 0
@@ -108,14 +108,13 @@ for key in products:
     product = products[key]
     name = product['funding_source']
     try:
-        print(name)
         counterA += 1
         uniq_id = fundingsource_id_to_hash_map[name]
     except:
         counterB += 1
         uniq_id = 'INVALID FUNDING SOURCE ID'
     product['funding_source'] = uniq_id
-    new_dict['products'].append(product)
+    new_dict['products'][key] = product
 
 print('out of {} products, {} products have funding sources listed that do not exist in the funding sources table, and {} do'.format(counterA + counterB, counterB, counterA))
 
