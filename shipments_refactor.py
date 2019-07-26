@@ -42,6 +42,8 @@ def give_uniq_ids(file_name, key):
 
             # get POSIX time
             seconds = (date - datetime(1970,1,1)).total_seconds()
+            # convert from UTC to PST
+            seconds = seconds + (7 * 60 * 60)
             obj[accessor] = seconds
             if('Shipments' in file_name and obj['invoice_date'] != ''):
                 accessor = 'invoice_date'
