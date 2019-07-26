@@ -41,6 +41,23 @@ def parseItems(data, table_name, accessor):
                 # product; funds_source; unit weight: case lots: total weight
                 elif(len(values) == 5):
                     keys = ['product', 'funds_source', 'unit_weight', 'case_lots', 'total_weight']
+                # product; funds_source; unit weight; unit weight dupe: case lots: total weight
+                elif(len(values) == 6):
+                    keys = ['product', 'funds_source', 'unit_weight', 'case_lots', 'total_weight']
+                    firstUW = values[2] if values[2] != '' and values[2] != ' ' else False
+                    secondUW = values[3] if values[3] != '' and values[3] != ' ' else False
+
+                    if(firstUW or secondUW):
+                        if(firstUW and secondUW):
+                            values[2] = max(int(firstUW, 10), int(secondUW, 10))
+                        else:
+                            values[2] = firstUW if firstUW else secondUW
+                    else:
+                        values[2] = ''
+
+                    values[3] = values[4]
+                    values[4] = values[5]
+
             # create the new item as a dict
             json_dict = {keys[i] : values [i] for i in range(len(keys))}
             new_items.append(json_dict)
